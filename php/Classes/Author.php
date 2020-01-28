@@ -20,7 +20,7 @@ use Ramsey\Uuid\Uuid;
 
 
 
-class Author{
+class Author implements \JsonSerializable {
 	//use ValidateDate;
 	use ValidateUuid;
 
@@ -173,19 +173,19 @@ class Author{
 			throw(new \InvalidArgumentException("profile password hash empty or insecure"));
 		}
 		//enforce the hash is an Argon hash
-		$newAuthorHash = password_get_info($newAuthorHash);
-		if($newAuthorHash["algoName"] !== "argoni2i") {
+		$authorHashInfo = password_get_info($newAuthorHash);
+		if($authorHashInfo["algoName"] !== "argon2i") {
 				throw(new \InvalidArgumentException("profile hash is not a valid hash"));
 		}
-		//enforce that the hash is exactly 97 characters.
-		if(strlen($newAuthorHash)!==97) {
-				throw(new\RangeException("profile hash must be 97 characters"));
+		//enforce that the hash is exactly 96 characters.
+		if(strlen($newAuthorHash)!==96) {
+				throw(new\RangeException("profile hash must be 96 characters"));
 		}
 		//store the hash
 		$this -> authorHash = $newAuthorHash;
 	}
 	public function setAuthorUsername($newAuthorUsername){
-		$this -> authorEmail = $newAuthorUsername;
+		$this -> authorUsername = $newAuthorUsername;
 	}
 
 	/**
@@ -200,7 +200,7 @@ class Author{
 	public function getAuthorActivationToken(): ?string {
 		return $this-> authorActivationToken;
 	}
-	public function getAuthorAvatar(){
+	public function getAuthorAvatarUrl(){
 		return $this-> authorAvatarUrl;
 	}
 /**
@@ -217,14 +217,19 @@ class Author{
 	 *
 	 * @return string value of hash
 	 */
-	public function getHash(): string {
+	public function getAuthorHash() : string {
 		return $this-> authorHash;
 	}
 	public function getAuthorUsername(){
 		return $this-> authorUsername;
 	}
 
-
+	public function jsonSerialize() : array{
+				$fields = get_object_vars($this);
+				$fields["authorId"] = $this->authorId->toString();
+				return($fields);
+	}
+		// TODO: Implement jsonSerialize() method.}
 
 
 }

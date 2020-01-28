@@ -14,7 +14,7 @@
 //);
 namespace Vlad11793\ObjectOrientated;
 require_once("autoload.php");
-require_once(dirname(Object-Orientated) . "/vendor/autoload.php");
+require_once(dirname(__DIR__) . "/vendor/autoload.php");
 
 use Ramsey\Uuid\Uuid;
 

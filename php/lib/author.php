@@ -15,3 +15,11 @@ echo ($newAuthor-> getAuthorId()),($newAuthor-> getAuthorActivationToken()),($ne
 var_dump($newAuthor);
 
 //No idea why cant call class Author.php
+
+$returnObject = new Author();
+$returnObject->getAuthorbyAuthorId();
+var_dump($returnObject);
+
+$returnArray = new Author();
+$returnArray->getAuthorsByAuthorId();
+var_dump($returnArray);
